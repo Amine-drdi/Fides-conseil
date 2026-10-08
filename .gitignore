@@ -1,0 +1,4 @@
+node_modules/
+dist/
+app-src.tar.gz
+.DS_Store
