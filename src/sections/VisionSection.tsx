@@ -308,7 +308,7 @@ export default function VisionSection() {
               flexWrap: 'wrap',
             }}
           >
-            {['Assureurs', 'Sociétés de gestion', 'Notaires', 'Experts-comptables', 'Banques partenaires'].map(
+            {['Assureurs', 'Sociétés de gestion', 'Notaires', 'Experts-comptables', 'Agences immobilières'].map(
               (partner) => (
                 <span
                   key={partner}

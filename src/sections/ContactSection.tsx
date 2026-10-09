@@ -295,7 +295,7 @@ export default function ContactSection() {
             <div style={{ marginBottom: '44px' }}>
               <span style={labelStyle}>Email</span>
               <a
-                href="mailto:contact@fidesconseil.fr"
+                href="mailto:contact@fidesconseil-patrimoine.fr"
                 data-hover
                 style={{
                   fontFamily: 'var(--font-sans)',
@@ -308,9 +308,25 @@ export default function ContactSection() {
                 onMouseEnter={(e) => (e.currentTarget.style.color = '#DCCAA4')}
                 onMouseLeave={(e) => (e.currentTarget.style.color = '#C5A059')}
               >
-                contact@fidesconseil.fr
+                contact@fidesconseil-patrimoine.fr
               </a>
             </div>
+
+            <div style={{ marginBottom: '44px' }}>
+              <span style={labelStyle}>Téléphone</span>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '15px',
+                  fontWeight: 300,
+                  lineHeight: 1.8,
+                  color: '#F8F8F8',
+                }}
+              >
+                06 09 99 98 02
+              </p>
+            </div>
+
 
             <div style={{ marginBottom: '44px' }}>
               <span style={labelStyle}>Informations légales</span>
@@ -319,7 +335,7 @@ export default function ContactSection() {
                   'SIRET : 106 012 594 00011',
                   'Capital social : 10 000 €',
                   'Code NAF : 6622Z',
-                  'Immatriculation ORIAS : en cours',
+                  'Immatriculation ORIAS : 26011766',
                 ].map((line) => (
                   <span
                     key={line}
@@ -591,7 +607,7 @@ export default function ContactSection() {
                       }}
                     >
                       Une erreur est survenue lors de l'envoi. Réessayez ou écrivez-nous directement à
-                      contact@fidesconseil.fr
+                      contact@fidesconseil-patrimoine.fr
                     </p>
                   </div>
                 )}

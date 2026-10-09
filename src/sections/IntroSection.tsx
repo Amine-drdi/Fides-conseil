@@ -102,7 +102,7 @@ export default function IntroSection() {
         {[
           { label: 'SIRET', value: '106 012 594 00011' },
           { label: 'Capital', value: '10 000 €' },
-          { label: 'N° ORIAS', value: ' en cours' },
+          { label: 'N° ORIAS', value: ' 26011766' },
         ].map((item) => (
           <div
             key={item.label}

@@ -34,7 +34,7 @@ export default function MentionsLegales() {
               'Siège social : 460 Clos de la Courtine, 93160 Noisy-le-Grand',
               'SIRET : 106 012 594 00011',
               'Code NAF : 6622Z (Activités des agents et courtiers d\'assurances)',
-              'Immatriculation ORIAS : en cours — www.orias.fr',
+              'Immatriculation ORIAS : 26011766 — www.orias.fr',
               'Directeur de la publication : Raad Yassir, Directeur Général',
               'Contact : contact@fidesconseil-patrimoine.fr',
             ],

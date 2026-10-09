@@ -5,15 +5,25 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const teamMembers = [
+    {
+    name: 'Marouane Charni',
+    role: 'PRÉSIDENT DE FIDES',
+    roleEn: 'Co-fondateur',
+    image: '/images/marouane-charni.jpeg',
+    bio: "Convaincu que la confiance, la transparence et l’excellence sont les fondements d’une relation durable, j’ai souhaité faire de FIDES un cabinet où chaque décision est guidée par l’intérêt de nos clients.Notre ambition est claire : proposer un accompagnement patrimonial sur mesure, fondé sur une vision stratégique à long terme, une exigence constante et une totale indépendance de conseil.À travers FIDES, je souhaite incarner une nouvelle approche du conseil patrimonial, où la proximité, la rigueur et l’engagement permettent de bâtir des relations solides et pérennes.",
+    quote: "La confiance ne se revendique pas, elle se construit. Notre engagement est de la mériter chaque jour, par l’excellence de nos conseils et la justesse de nos décisions.",
+    expertise: ['Expertise patrimoniale', 'Vision stratégique', 'Leadership', 'Excellence'],
+    color: '#C5A059',
+  },
   {
     name: 'Raad Yassir',
-    role: 'Directeur Général',
+    role: 'Directeur Commercial',
     roleEn: 'Co-fondateur',
     image: '/images/raad-yassir.jpg',
     bio: "Après un Master en Finance et 3 ans d'expérience en gestion de patrimoine, j'ai décidé de co-fonder le cabinet FIDES pour avoir plus d'indépendance dans le conseil — sans aucune orientation ou conseil dirigé par intêt. Je voulais implanter ma vision : un conseil patrimonial pur, transparent et dédié exclusivement à l'intérêt de nos clients.",
     quote: "L'indépendance est notre bien le plus précieux. Elle garantit à chaque client un conseil objectif, sans conflit d'intérêts.",
     expertise: ['Gestion de Patrimoine', 'Finance', 'Stratégie', 'Conseil Indépendant'],
-    color: '#C5A059',
+    color: '#ebca8d',
   },
   {
     name: 'Montasser Charni',

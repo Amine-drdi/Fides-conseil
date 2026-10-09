@@ -226,7 +226,7 @@ export default function HeroSection() {
       </div>
 
       {/* Tagline */}
-      <p
+     {/* <p
         ref={taglineRef}
         style={{
           fontFamily: 'var(--font-sans)',
@@ -241,10 +241,10 @@ export default function HeroSection() {
         }}
       >
         La confiance est notre fonds de commerce
-      </p>
+      </p>*/}
 
       {/* Scroll indicator */}
-      <div
+     {/*  <div
         ref={scrollIndicatorRef}
         style={{
           position: 'absolute',
@@ -278,7 +278,7 @@ export default function HeroSection() {
             strokeLinejoin="round"
           />
         </svg>
-      </div>
+      </div>*/}
     </section>
   );
 }
