@@ -312,21 +312,6 @@ export default function ContactSection() {
               </a>
             </div>
 
-            <div style={{ marginBottom: '44px' }}>
-              <span style={labelStyle}>Téléphone</span>
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '15px',
-                  fontWeight: 300,
-                  lineHeight: 1.8,
-                  color: '#F8F8F8',
-                }}
-              >
-                06 09 99 98 02
-              </p>
-            </div>
-
 
             <div style={{ marginBottom: '44px' }}>
               <span style={labelStyle}>Informations légales</span>
