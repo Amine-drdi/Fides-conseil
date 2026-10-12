@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import emailjs from '@emailjs/browser';
 import { submitContactRequest } from '@/lib/supabase';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,6 +13,7 @@ export default function ContactSection() {
   const headerRef = useRef<HTMLDivElement>(null);
   const formWrapRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [mode, setMode] = useState<ContactMode>('rdv');
   const [formData, setFormData] = useState({
@@ -36,39 +38,82 @@ export default function ContactSection() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (sending) return;
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (sending) return;
 
-    // Honeypot anti-spam : un bot qui remplit ce champ caché obtient un faux succès
-    if (honeypot) {
-      setSubmitted(true);
-      return;
-    }
+  // Honeypot anti-spam : un bot qui remplit ce champ caché obtient un faux succès
+  if (honeypot) {
+    setSubmitted(true);
+    return;
+  }
 
-    setSending(true);
-    setSendError(false);
+  setSending(true);
+  setSendError(false);
 
-    const result = await submitContactRequest({
-      mode,
-      prenom: formData.prenom,
-      nom: formData.nom,
+  // 1️⃣ Enregistrement dans Supabase
+  const supabaseResult = await submitContactRequest({
+    mode,
+    prenom: formData.prenom,
+    nom: formData.nom,
+    telephone: formData.telephone,
+    email: formData.email,
+    profil: formData.profil,
+    objet: formData.objet,
+    message: formData.message,
+  });
+
+  // 2️⃣ Envoi de la notification par email via EmailJS
+  let emailSuccess = true;
+  try {
+    const templateParams = {
+      from_name: `${formData.prenom} ${formData.nom}`.trim(),
+      from_email: formData.email,
+      reply_to: formData.email,
       telephone: formData.telephone,
-      email: formData.email,
       profil: formData.profil,
-      objet: formData.objet,
+      objet: mode === 'rappel' ? 'Être rappelé' : formData.objet,
+      mode: mode === 'rdv' ? 'Prise de rendez-vous' : 'Demande de rappel',
       message: formData.message,
-    });
+    };
 
-    setSending(false);
+    await emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      templateParams,
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    );
+  } catch (error) {
+    console.error("Échec de l'envoi de l'email :", error);
+    emailSuccess = false;
+  }
 
-    if (result.ok) {
-      setSubmitted(true);
-      setFormData({ prenom: '', nom: '', telephone: '', email: '', profil: '', objet: '', message: '' });
-    } else {
-      setSendError(true);
+  setSending(false);
+
+  // 3️⃣ Bilan : on considère la soumission réussie si AU MOINS UN des deux a fonctionné
+  if (supabaseResult.ok || emailSuccess) {
+    if (!supabaseResult.ok) {
+      console.warn('⚠️ Enregistrement Supabase échoué, mais email envoyé.');
     }
-  };
+    if (!emailSuccess) {
+      console.warn("⚠️ Email non envoyé, mais enregistrement Supabase réussi.");
+    }
+    setSubmitted(true);
+    setFormData({
+      prenom: '',
+      nom: '',
+      telephone: '',
+      email: '',
+      profil: '',
+      objet: '',
+      message: '',
+    });
+    setConsent(false);
+  } else {
+    // Les deux ont échoué
+    setSendError(true);
+  }
+};
 
   const handleModeClick = (m: ContactMode) => {
     setMode(m);
@@ -312,7 +357,6 @@ export default function ContactSection() {
               </a>
             </div>
 
-
             <div style={{ marginBottom: '44px' }}>
               <span style={labelStyle}>Informations légales</span>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -405,7 +449,11 @@ export default function ContactSection() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+              <form
+                ref={formRef}
+                onSubmit={handleSubmit}
+                style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}
+              >
                 {/* Prénom + Nom */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div>

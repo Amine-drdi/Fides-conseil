@@ -2,3 +2,10 @@ node_modules/
 dist/
 app-src.tar.gz
 .DS_Store
+
+# Environnement — CRITIQUE
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development

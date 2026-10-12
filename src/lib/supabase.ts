@@ -1,9 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://qzxxazafsbhpylvkbylp.supabase.co';
-const supabaseKey = 'sb_publishable_k9lD92kQxby45ShdPFskPA_0g4uQHQd';
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export interface ContactRequest {
   mode: 'rdv' | 'rappel';
