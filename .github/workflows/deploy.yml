@@ -1,0 +1,62 @@
+name: Deploy to Infomaniak
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Permet de lancer manuellement depuis l'onglet Actions
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Create .env file
+        run: |
+          cat <<EOF > .env
+          VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_EMAILJS_SERVICE_ID=${{ secrets.VITE_EMAILJS_SERVICE_ID }}
+          VITE_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}
+          VITE_EMAILJS_PUBLIC_KEY=${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
+          EOF
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          echo "📦 Contenu du dossier dist :"
+          ls -la dist/
+          echo ""
+          echo "🔍 Vérification que les variables sont injectées :"
+          if grep -r "supabase.co" dist/assets/*.js > /dev/null 2>&1; then
+            echo "✅ URL Supabase trouvée dans le bundle"
+          else
+            echo "❌ URL Supabase ABSENTE du bundle — problème d'injection .env"
+            exit 1
+          fi
+
+      - name: Deploy to Infomaniak via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          local-dir: ./dist/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
