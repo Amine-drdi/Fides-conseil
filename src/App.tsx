@@ -1,3 +1,4 @@
+// src/App.tsx
 import { Routes, Route, Navigate } from 'react-router';
 import { useLenis } from '@/hooks/useLenis';
 import CustomCursor from '@/components/CustomCursor';
@@ -27,6 +28,12 @@ import ClientLogin from '@/pages/ClientLogin';
 import ClientPortal from '@/pages/ClientPortal';
 import MentionsLegales from '@/pages/MentionsLegales';
 import PolitiqueConfidentialite from '@/pages/PolitiqueConfidentialite';
+
+// --- Admin (nouveaux imports) ---
+import ProtectedRoute from '@/components/admin/ProtectedRoute';
+import Dashboard from '@/pages/admin/Dashboard';
+import RequestsList from '@/pages/admin/RequestsList';
+import RequestDetail from '@/pages/admin/RequestDetail';
 
 function HomePage() {
   return (
@@ -68,6 +75,7 @@ export default function App() {
       <CustomCursor />
       <CookieConsent />
       <Routes>
+        {/* ===================== SITE PUBLIC ===================== */}
         <Route
           path="/"
           element={
@@ -108,10 +116,54 @@ export default function App() {
             </PageLayout>
           }
         />
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/articles" element={<AdminArticles />} />
+
+        {/* ===================== ADMIN ===================== */}
+        {/* Login (publique) — DOIT être AVANT /admin pour ne pas être capturé */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        {/* Dashboard admin (protégé) */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Demandes de contact (protégé) */}
+        <Route
+          path="/admin/demandes"
+          element={
+            <ProtectedRoute>
+              <RequestsList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/demandes/:id"
+          element={
+            <ProtectedRoute>
+              <RequestDetail />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Articles (protégé) */}
+        <Route
+          path="/admin/articles"
+          element={
+            <ProtectedRoute>
+              <AdminArticles />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ===================== ESPACE CLIENT ===================== */}
         <Route path="/espace-client" element={<ClientLogin />} />
         <Route path="/espace-client/dashboard" element={<ClientPortal />} />
+
+        {/* ===================== 404 ===================== */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

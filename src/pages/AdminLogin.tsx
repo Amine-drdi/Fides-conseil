@@ -13,9 +13,9 @@ export default function AdminLogin() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) {
-        navigate('/admin/articles', { replace: true });
-      } else {
+if (data.session) {
+  navigate('/admin', { replace: true });
+} else {
         setChecking(false);
       }
     });
@@ -30,7 +30,7 @@ export default function AdminLogin() {
     if (error) {
       setError('Email ou mot de passe incorrect.');
     } else {
-      navigate('/admin/articles', { replace: true });
+    navigate('/admin', { replace: true });
     }
   };
 
